@@ -39,6 +39,9 @@ public class SpringSecurityWebConfig {
                     .authorizeRequests()
                     .antMatchers("/resources/css/**", "/user/registration").permitAll()
                     .anyRequest().authenticated()
+                    .antMatchers("/index").permitAll()
+                    .antMatchers("/manufacturer/**").permitAll()
+                    .antMatchers("/product**").permitAll()
                     .and()
                     .formLogin()
                     .loginPage("/login")
@@ -63,4 +66,6 @@ public class SpringSecurityWebConfig {
             auth.userDetailsService(usersDetailsService).passwordEncoder(bCryptPasswordEncoder());
         }
     }
+
+
 }
