@@ -16,7 +16,7 @@ class Manufacturer extends BaseEntity {
     @Column
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "manufacturer")
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "manufacturer")
     private Set<Product> products;
 
     @Override

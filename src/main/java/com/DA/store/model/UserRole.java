@@ -17,9 +17,9 @@ public enum UserRole {
         this.role = role;
     }
 
-    public static Optional<UserRole> getUserRole(String status){
+    public static Optional<UserRole> getUserRole(String status) {
         return Arrays.stream(UserRole.values())
-                .filter(enumValue->enumValue.getRole().equals(status))
+                .filter(enumValue -> enumValue.getRole().equals(status))
                 .findAny();
     }
 }

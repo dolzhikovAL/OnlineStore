@@ -12,60 +12,56 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-public class SpringSecurityWebConfig {
 
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SpringSecurityWebConfig extends WebSecurityConfigurerAdapter {
 
-    @Configuration
-    @EnableWebSecurity
-    @EnableGlobalMethodSecurity(prePostEnabled = true)
-    public class SpringSecurityWebConfig extends WebSecurityConfigurerAdapter {
+    private final UsersDetailsService usersDetailsService;
 
-        private final UsersDetailsService usersDetailsService;
+    @Autowired
+    public SpringSecurityWebConfig(UsersDetailsService usersDetailsService) {
+        this.usersDetailsService = usersDetailsService;
+    }
 
-        @Autowired
-        public SpringSecurityWebConfig(UsersDetailsService usersDetailsService) {
-            this.usersDetailsService = usersDetailsService;
-        }
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder(12);
+    }
 
-        @Bean
-        public BCryptPasswordEncoder bCryptPasswordEncoder() {
-            return new BCryptPasswordEncoder(12);
-        }
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/resources/css/**", "/user/**").permitAll()
+                .antMatchers("/index").permitAll()
+                .antMatchers("/manufacturer/**").permitAll()
+                .antMatchers("/product**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/index")
+                .permitAll()
+                .and()
+                .logout()
+                .permitAll()
+                .logoutSuccessUrl("/login?logout")
+                .and()
+                .headers().frameOptions().sameOrigin();
+    }
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .csrf().disable()
-                    .authorizeRequests()
-                    .antMatchers("/resources/css/**", "/user/registration").permitAll()
-                    .anyRequest().authenticated()
-                    .antMatchers("/index").permitAll()
-                    .antMatchers("/manufacturer/**").permitAll()
-                    .antMatchers("/product**").permitAll()
-                    .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/index")
-                    .permitAll()
-                    .and()
-                    .logout()
-                    .permitAll()
-                    .logoutSuccessUrl("/login?logout")
-                    .and()
-                    .headers().frameOptions().sameOrigin();
-        }
-
-        @Bean
-        public AuthenticationManager customAuthenticationManager() throws Exception {
-            return authenticationManager();
-        }
-
-
-        @Autowired
-        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(usersDetailsService).passwordEncoder(bCryptPasswordEncoder());
-        }
+    @Bean
+    public AuthenticationManager customAuthenticationManager() throws Exception {
+        return authenticationManager();
     }
 
 
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(usersDetailsService).passwordEncoder(bCryptPasswordEncoder());
+    }
 }
+

@@ -1,13 +1,11 @@
 package com.DA.store.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.function.DoubleBinaryOperator;
 
 @NoArgsConstructor
 @Entity
@@ -21,10 +19,9 @@ class Product extends BaseEntity {
     private Double price;
 
 
-    @ManyToOne (cascade = {CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "manufacturer_id")
     private Manufacturer manufacturer;
-
 
 
     @Override
@@ -39,17 +36,18 @@ class Product extends BaseEntity {
     }
 
     @Override
-    public int hashCode(){
-        return Objects.hash(manufacturer,name,price);
+    public int hashCode() {
+        return Objects.hash(manufacturer, name, price);
     }
 
     @Override
-    public UUID getId(){
+    public UUID getId() {
         return super.getId();
     }
+
     @Override
-    public  String toString(){
-        final StringBuilder sb= new StringBuilder("Product{");
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Product{");
         sb.append(super.toString());
         sb.append(", name=").append(name);
         sb.append(", price=").append(price);

@@ -2,7 +2,6 @@ package com.DA.store.model;
 
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -39,10 +38,10 @@ public @Data class User extends BaseEntity {
     private UserStatus status;
 
     @Override
-    public  boolean equals(Object o){
-        if (this==o) return true;
-        if (o==null || getClass() != o.getClass()) return false;
-        User user= (User) o;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
         return firstNme.equals(user.firstNme) &&
                 lastName.equals(user.lastName) &&
                 email.equals(user.email);

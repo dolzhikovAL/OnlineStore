@@ -80,8 +80,5 @@ class UserServerImpl implements UserService {
         user.setPassword(passwordHash);
     }
 
-    public String getUserName(){
-        Authentication auth= SecurityContextHolder.getContext().getAuthentication();
-        return auth.getName();
-    }
+
 }

@@ -8,9 +8,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product,java.util.UUID> {
+public interface ProductRepository extends JpaRepository<Product, java.util.UUID> {
 
     @Override
-   Optional<Product> findById (UUID uuid);
+    Optional<Product> findById(UUID uuid);
 
 }
